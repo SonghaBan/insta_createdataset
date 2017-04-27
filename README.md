@@ -1,14 +1,14 @@
-# insta_createdataset
+# Instagram ML Project Module: Data Preprocessor
 
 ## Installation
-Install dependencies with pip3.
+Clone or unzip into a folder and install dependencies with pip3.
 
 ```
 $ pip install -r requirements.txt
 ```
 
 ## Run
-Put profiles crawled using ![instagram crawler]() into a folder (by default `profiles/` folder).
+Put profiles crawled using [instagram crawler](https://github.com/simonseo/instacrawler-privateapi) into a folder (by default `profiles/` folder).
 
 Run by typing in `python create_dataset.py`.
 
