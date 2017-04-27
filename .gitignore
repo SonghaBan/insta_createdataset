@@ -1,0 +1,9 @@
+.Python
+__pycache__/
+bin/
+lib/
+down/
+include/
+*.csv
+*.json
+resize*

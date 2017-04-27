@@ -10,10 +10,12 @@ import os
 import unicodecsv as csv
 
 #read all the json files in the folder and save the data sorted by posts into csv
-def read_files(json_dir):
+def read_profiles(json_dir, output_file_name='posts.csv'):
     print('reading profiles...')
-    with open('posts.csv', "wb") as o_posts:
+    with open(output_file_name, "wb") as o_posts:
         writer = csv.writer(o_posts, lineterminator='\n') 
+        if not os.path.exists(json_dir):
+            raise Exception('Please provide directory of profile JSONs')
         for f in os.listdir(json_dir):
             if f != '.DS_Store':
                 with open(json_dir+f) as json_data:
@@ -30,18 +32,18 @@ def sort_by_posts(dic, writer):
     posts = dic['posts']
     
     #don't save if no post
-    if len(posts) > 0:    
+    if len(posts) == 0: return
         
-        for p in posts:
-            post = []
-            pic_url = p['pic_url'] #0
-            like_count = p['like_count'] #1
-            comment_count = p['comment_count'] #8
-            date = p['date'] #9
-            caption = p['caption'] #10
-            tags = p['tags'] #11
-            post = [pic_url, like_count, username, user_id, full_name, profile_pic_url, media_count, follower_count, comment_count, date, caption, tags]           
-            writer.writerow(post)
+    for p in posts:
+        post = []
+        pic_url = str(p['pic_url']) #0
+        like_count = p['like_count'] #1
+        comment_count = p['comment_count'] #8
+        date = p['date'] #9
+        caption = str(p['caption']) #10
+        tags = p['tags'] #11
+        post = [pic_url, like_count, username, user_id, full_name, profile_pic_url, media_count, follower_count, comment_count, date, caption, tags]           
+        writer.writerow(post)
             
 
         
