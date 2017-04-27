@@ -8,12 +8,33 @@ $ pip install -r requirements.txt
 ```
 
 ## Run
-Put profiles crawled using [instagram crawler](https://github.com/simonseo/instacrawler-privateapi) into a folder (by default `profiles/` folder).
+Put profiles crawled using [Instagram Crawler](https://github.com/simonseo/instacrawler-privateapi) into a folder (by default `profiles/` folder). The JSON format must follow that defined in the above repository.
 
 Run by typing in `python create_dataset.py`.
 
 
 ## Detailed usage
+
+This script is divided into 6 parts.
+
+1. Process profile JSON files and save them as a CSV for easier scripting
+1. Download all photos in each Instagram post
+1. Resize photos into a uniform square format
+1. Retrieve RGB values from the resized photos and save them in the following order:
+
+    ```
+    R,R,R,R
+    G,G,G,G
+    B,B,B,B
+    R,R,R,R
+    G,G,G,G
+    B,B,B,B
+    ...
+    ```
+
+1. Clean up erroneous files and records that were created due to users deleting posts between the time of crawling profiles and processing them.
+1. Save labels. Currently, `label := # of likes / # of followers`
+
 ```
 $ python create_dataset.py -h
 usage: create_dataset.py [-h] [-s IMG_SIZE] [--overwrite] [--stage STAGE]
