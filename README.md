@@ -53,5 +53,5 @@ optional arguments:
                         3: Resize photos. See also: -s, --overwrite
                         4: Process photos in resize directory and save as CSV.
                         5: If you want to clean up erroneous files and records detected during resize
-                        6: Save labels (currently supports label = ratio of #likes/#followers). Must use 5 beforehand
+                        6: Save labels (currently supports label = ratio of #likes/#followers*100). Must use 5 beforehand
 ```
