@@ -14,10 +14,13 @@ from time import time
 
 
 def main():   
+    if not os.path.exists(c['csv_dir']):
+        os.makedirs(c['csv_dir'])
+            
     if 1 in c['stage']:
         # PROCESS PROFILES IN JSON AND WRITE TO CSV
         print(os.getcwd() + c['json_dir'])
-        rj.read_profiles(os.getcwd() + os.sep + c['json_dir'], c['posts_original'])
+        rj.read_profiles(os.getcwd() + os.sep + c['json_dir'], c['csv_dir'], c['posts_original'])
     
     if 2 in c['stage']:
         # DOWNLOAD PHOTOS
@@ -40,18 +43,19 @@ def main():
     if 4 in c['stage']:
         # SAVE PIXEL DATA IN PHOTOS AS CSV
         print('Saving pixel data to csv...')
-        pp.pixeldata_to_csv(c['resize_dir'], c['resize_dir'] + 'rgbdata' + str(c['img_size']) + '.csv')
+        pp.pixeldata_to_csv(c['resize_dir'], c['csv_dir'],file_name='rgbdata' + str(c['img_size']) + '.csv')
 
     if 5 in c['stage']:
         # REMOVE ERRONEOUS FILES FROM DOWNLOAD DIR AND CSV
-        pp.remove_records('resize_errors.txt', c['posts_original'], c['posts_filtered'], c['down_dir'])
+        pp.remove_records('resize_errors.txt', c['posts_original'], c['posts_filtered'], c['down_dir'],c['csv_dir'])
     
     if 6 in c['stage']:
+        
         # SAVE LABELS AS CSV
         print('Saving labels to csv...')
-        data = file_to_list(c['posts_filtered'])
+        data = file_to_list(c['csv_dir']+c['posts_filtered'])
         urls, likes, followers = important_lists(data)
-        pp.labels_to_csv(likes, followers, c['labels'])
+        pp.labels_to_csv(likes, followers, c['csv_dir'], c['labels'])
 
 
 if __name__ == '__main__':
@@ -68,6 +72,7 @@ if __name__ == '__main__':
         'json_dir'       : 'profiles' + os.sep,
         'down_dir'       : 'down' + os.sep,
         'resize_dir'     : 'resize' + str(args.img_size) + os.sep if args.img_size else 'resize100' + os.sep,
+        'csv_dir'        : 'csv' + os.sep,
         'img_size'       : args.img_size if args.img_size else 100,
         'stage'          : [int(c) for c in (list('123456') if args.stage is None else args.stage)],
         'posts_original' : 'posts_original.csv',

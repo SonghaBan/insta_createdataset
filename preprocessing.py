@@ -72,9 +72,9 @@ def pixels(image):
     return pixels
 
 
-def pixeldata_to_csv(resized_dir, file_name='rgbdata.csv'):
+def pixeldata_to_csv(resized_dir, csv_dir, file_name='rgbdata.csv'):
     pixeldata = np.array([], dtype=int)
-    with open(file_name, "w") as output:
+    with open(os.path.join(csv_dir,file_name), "w") as output:
         writer = csv.writer(output, lineterminator='\n')
         for file_name in os.listdir(resized_dir):
             if file_name.endswith('.jpg'):
@@ -82,13 +82,13 @@ def pixeldata_to_csv(resized_dir, file_name='rgbdata.csv'):
                 writer.writerows(pixeldata)
 
 
-def labels_to_csv(likes, followers, file_name='labels.csv'):        
-    with open(file_name, "w") as lo:
+def labels_to_csv(likes, followers, csv_dir, file_name='labels.csv'):    
+    with open(os.path.join(csv_dir, file_name), "w") as lo:
         writer = csv.writer(lo, lineterminator='\n')
         for i in range(len(likes)):
             writer.writerow([likes[i]/followers[i]]) 
 
-def remove_records(errors_file, input_file, output_file, down_dir):
+def remove_records(errors_file, input_file, output_file, down_dir,csv_dir):
     '''cleans up erronoeous records from csv and download directory'''
     print("removing erroneous records")
     try:
@@ -98,13 +98,13 @@ def remove_records(errors_file, input_file, output_file, down_dir):
     except Exception as e:
         print(e)
         return
-    f = file_to_list(input_file)
+    f = file_to_list(csv_dir + '/'+input_file)
     output = []
     for i, line in enumerate(f):
         if not str(i+1)+'.jpg' in errors_list:
             output.append(line)
     print(len(output), len(errors_list))
-    with open(output_file, 'w') as f:
+    with open(os.path.join(csv_dir,output_file), 'w') as f:
         writer = csv.writer(f, lineterminator='\n')
         writer.writerows(output)
     for file_name in os.listdir(down_dir):

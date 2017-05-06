@@ -10,9 +10,9 @@ import os
 import unicodecsv as csv
 
 #read all the json files in the folder and save the data sorted by posts into csv
-def read_profiles(json_dir, output_file_name='posts.csv'):
+def read_profiles(json_dir, csv_dir, output_file_name='posts.csv'):
     print('reading profiles...')
-    with open(output_file_name, "wb") as o_posts:
+    with open(os.path.join(csv_dir, output_file_name), "wb") as o_posts:
         writer = csv.writer(o_posts, lineterminator='\n') 
         if not os.path.exists(json_dir):
             raise Exception('Please provide directory of profile JSONs')
