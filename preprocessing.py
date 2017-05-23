@@ -77,16 +77,29 @@ def pixeldata_to_csv(resized_dir, csv_dir, file_name='rgbdata.csv'):
     with open(os.path.join(csv_dir,file_name), "w") as output:
         writer = csv.writer(output, lineterminator='\n')
         for file_name in os.listdir(resized_dir):
-            if file_name.endswith('.jpg'):
-                pixeldata = pixels(resized_dir + os.sep + file_name).reshape(-1,3).T.tolist()
+            try:
+                if file_name.endswith('.jpg'):
+                    pixeldata = pixels(resized_dir + os.sep + file_name).reshape(-1,3).T.tolist()
+                    writer.writerows(pixeldata)
+            except ValueError as e:
+                print(e)
+                pixeldata = np.repeat(pixels(resized_dir + os.sep + file_name).reshape(-1,1).T, 3, axis=0).tolist()
                 writer.writerows(pixeldata)
+
+            except Exception as e:
+                print('Exception while saving RGB with file {}'.format(file_name), e)
 
 
 def labels_to_csv(likes, followers, csv_dir, file_name='labels.csv'):    
     with open(os.path.join(csv_dir, file_name), "w") as lo:
         writer = csv.writer(lo, lineterminator='\n')
         for i in range(len(likes)):
-            writer.writerow([likes[i]/followers[i]]) 
+            try:
+                writer.writerow([likes[i]/followers[i]]) 
+            except ZeroDivisionError as e:
+                print(e)
+                writer.writerow([0]) 
+
 
 def remove_records(errors_file, input_file, output_file, down_dir,csv_dir):
     '''cleans up erronoeous records from csv and download directory'''

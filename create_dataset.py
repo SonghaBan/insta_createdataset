@@ -24,7 +24,7 @@ def main():
     
     if 2 in c['stage']:
         # DOWNLOAD PHOTOS
-        data = file_to_list(c['posts_original'])
+        data = file_to_list(c['csv_dir'] + c['posts_original'])
         urls, likes, followers = important_lists(data)
         divide_work(pp.download_all, 0, len(urls), 5, (urls, c['down_dir']))
         # pp.download_all(0, len(url), urls, down_dir)
@@ -32,10 +32,10 @@ def main():
     if 3 in c['stage']:
         # RESIZE PHOTOS
         # pp.resize_all(down_dir, resize_dir, img_size)
-        if 4 not in c['stage'] and os.path.exists(c['posts_filtered']): # if you don't remove erroneous files now ie. you removed it before, there must be a filtered version
-            posts = c['posts_filtered']
+        if 4 not in c['stage'] and os.path.exists(c['csv_dir'] + c['posts_filtered']): # if you don't remove erroneous files now ie. you removed it before, there must be a filtered version
+            posts = c['csv_dir'] + c['posts_filtered']
         else:
-            posts = c['posts_original']
+            posts = c['csv_dir'] + c['posts_original']
         with open(posts, 'r') as file:
             l = sum(1 for line in file)
         divide_work(pp.resize_all, 0, l, 5, (c['down_dir'], c['resize_dir'], c['img_size']))
